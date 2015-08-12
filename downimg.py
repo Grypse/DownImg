@@ -11,7 +11,7 @@ from time  import ctime,time,sleep
 from urllib2 import HTTPError,URLError
 from pathlib import Path
 
-import urllib2,sys,math,os,socket
+import urllib2,sys,math,os,socket,httplib
 
 def down(down_dir,link):
     """
@@ -79,6 +79,9 @@ class DownloadWorker(Thread):
                 print e.__weakref__
             except socket.error,e:
                 print e.__weakref__
+            # when the BadStatueLine exception occurs pass it and start the next task
+            except httplib.BadStatusLine:
+                pass
             self.queue.task_done()
 
 def main():
